@@ -25,13 +25,14 @@
         public function criarFuncionario(){
             $sql = "INSERT INTO
                    ". $this->db_table ."
-                   SET 
+                SET 
                     nome = :nome,
                     email = :email,
                     idade = :idade,
                     funcao = :funcao,
                     criado = :criado";
-            $stmt = $this->conexao->prepare($sql)        ;
+
+            $stmt = $this->conexao->prepare($sql);
 
             $this->nome=htmlspecialchars(strip_tags($this->nome));
             $this->email=htmlspecialchars(strip_tags($this->email));
@@ -47,7 +48,7 @@
             $stmt->bindParam(":funcao", $this->funcao);
             $stmt->bindParam(":criado", $this->criado);
 
-            if ($stmt->execute) {
+            if ($stmt->execute()) {
                 # code...
                 return true;
             }
@@ -80,6 +81,57 @@
             $this->idade = $dataRow['idade'];
             $this->funcao = $dataRow['funcao'];
             $this->criado = $dataRow['criado'];
+        }
+        // função atualizar funcionário
+        public function atualizarFuncionario(){
+            $sql = "UPDATE 
+                   ". $this->db_table ."
+                SET
+                    nome = :nome,
+                    email = :email,
+                    idade = :idade,
+                    funcao = :funcao,
+                    criado = :criado
+                WHERE
+                    id = :id";
+            $stmt = $this->conexao->prepare($sql);
+
+            $this->nome=htmlspecialchars(strip_tags($this->nome));
+            $this->email=htmlspecialchars(strip_tags($this->email));
+            $this->idade=htmlspecialchars(strip_tags($this->idade));
+            $this->funcao=htmlspecialchars(strip_tags($this->funcao));
+            $this->criado=htmlspecialchars(strip_tags($this->criado));
+            $this->id=htmlspecialchars(strip_tags($this->id));
+
+            //ligando dados
+            $stmt->bindParam(":nome", $this->nome);
+            $stmt->bindParam(":email", $this->email);
+            $stmt->bindParam(":idade", $this->idade);
+            $stmt->bindParam(":funcao", $this->funcao);
+            $stmt->bindParam(":criado", $this->criado);
+            $stmt->bindParam(":id", $this->id);
+
+            if ($stmt->execute()) {
+                # code...
+                return true;
+            }
+            return false;
+        }
+        //função deletar funcionário
+        function deletarFuncionario(){
+            $sql = "DELETE FROM " . $this->db_table . " WHERE id = ?";
+
+            $stmt = $this->conexao->prepare($sql);
+
+            $this->id=htmlspecialchars(strip_tags($this->id));
+
+            $stmt->bindParam(1, $this->id);
+
+            if ($stmt->execute()) {
+                # code...
+                return true;
+            }
+            return false;
         }
     }
 ?>
