@@ -58,9 +58,9 @@
             $sql = "SELECT
                     id,
                     nome,
-                    email
+                    email,
                     idade,
-                    funcao
+                    funcao,
                     criado
                   FROM
                    ". $this->db_table ."
